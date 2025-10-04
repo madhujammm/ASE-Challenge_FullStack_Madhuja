@@ -40,8 +40,6 @@ A modern, full-stack employee management system built with Flask backend and van
 
 ### Installation
 
-1. **Clone or download the project files**
-
    ```bash
    # Project structure:
    # ├── app.py
@@ -54,23 +52,46 @@ A modern, full-stack employee management system built with Flask backend and van
    # └── templates/
    #     └── index.html
    ```
+# 🚀 Steps to Run It
 
-2. **Install Python dependencies**
+## Clone the Repo
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+Open your terminal and grab the code:
 
-3. **Run the application**
+```bash
+git clone https://github.com/madhujammm/ASE-Challenge_FullStack_Madhuja.git
+cd ASE-Challenge_FullStack_Madhuja
+```
 
-   ```bash
-   python app.py
-   ```
+## Set Up the Backend
 
-4. **Access the application**
+### Create a virtual environment:
 
-   * Open your browser and navigate to: `http://localhost:5000`
-   * The application will automatically create the database with sample data
+```bash
+python -m venv venv
+source venv/bin/activate  # For Windows: venv\Scripts\activate
+```
+
+### Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Initialize the database (if not already set up):
+
+```bash
+python init_db.py
+```
+
+## Run the Flask App
+
+```bash
+python app.py
+```
+
+Flask should be running on [http://127.0.0.1:5000/](http://127.0.0.1:5000/). Open that in your browser and boom, you’re in.
+
 
 ## 🤪 Testing
 
