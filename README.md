@@ -1,6 +1,11 @@
 # EmployeeHub — Smart Workforce Manager
 
 A modern, full-stack employee management system built with Flask backend and vanilla JavaScript frontend. Features a responsive design with dark mode support, real-time activity tracking, and comprehensive CRUD operations.
+## DEMO:
+
+
+https://github.com/user-attachments/assets/ea7fec2c-a7f1-4105-b4c5-366e882458b3
+
 
 ## 🌟 Features
 
