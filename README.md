@@ -4,7 +4,7 @@ A modern, full-stack employee management system built with Flask backend and van
 ## DEMO:
 
 
-https://github.com/user-attachments/assets/ea7fec2c-a7f1-4105-b4c5-366e882458b3
+https://github.com/user-attachments/assets/5fc4814a-a5e8-41c3-bdf5-ba8c3d127ef3
 
 
 ## 🌟 Features
@@ -57,6 +57,27 @@ https://github.com/user-attachments/assets/ea7fec2c-a7f1-4105-b4c5-366e882458b3
    # └── templates/
    #     └── index.html
    ```
+
+# 🤖 AI INSIGHTS — Setup & Usage Guide
+
+## ⚙️ Setup Steps
+
+### 1. Obtain Gemini API Key
+- Go to **[Google AI Studio](https://aistudio.google.com/)**  
+- Sign in with your Google account  
+- Create a **new API key**  
+- Copy the generated key  
+- install : pip install google-generativeai
+
+---
+
+### 2. Configure Environment
+- In your project root, create a file named `.env`  
+- Add your Gemini API key as follows:
+
+```env
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+
 # 🚀 Steps to Run It
 
 ## Clone the Repo
