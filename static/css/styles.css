@@ -46,7 +46,75 @@
     padding: 0;
     box-sizing: border-box;
 }
+/* AI Summary Styles */
+.ai-summary-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 0;
+}
 
+.ai-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 0;
+    margin-bottom: 15px;
+}
+
+.ai-icon {
+    color: var(--primary-color);
+}
+
+.ai-summary-content {
+    padding: 0 20px 20px;
+    min-height: 120px;
+}
+
+.ai-placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.ai-summary-text {
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 0.9em;
+    white-space: pre-line;
+}
+
+.ai-summary-text h4 {
+    margin: 15px 0 8px 0;
+    color: var(--primary-color);
+    font-size: 1em;
+}
+
+.ai-summary-text ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.ai-summary-text li {
+    margin: 4px 0;
+}
+
+.ai-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 30px 20px;
+    color: var(--text-muted);
+}
+
+.ai-loading.hidden {
+    display: none;
+}
+
+.hidden {
+    display: none !important;
+}
 /* Logo and Tagline */
 .logo-section h1 {
     margin-bottom: 0.25rem;
