@@ -32,7 +32,11 @@ const elements = {
     nameError: document.getElementById('nameError'),
     emailError: document.getElementById('emailError'),
     positionError: document.getElementById('positionError'),
-    deleteEmployeeName: document.getElementById('deleteEmployeeName')
+    deleteEmployeeName: document.getElementById('deleteEmployeeName'),
+    generateSummaryBtn: document.getElementById('generateSummaryBtn'),
+    aiSummaryContent: document.getElementById('aiSummaryContent'),
+    aiSummary: document.getElementById('aiSummary'),
+    aiLoading: document.getElementById('aiLoading')
 };
 
 function initializeApp() {
@@ -65,6 +69,7 @@ function setupEventListeners() {
     elements.closeDeleteModal.addEventListener('click', closeDeleteModal);
     elements.cancelDeleteBtn.addEventListener('click', closeDeleteModal);
     elements.confirmDeleteBtn.addEventListener('click', handleDelete);
+    elements.generateSummaryBtn.addEventListener('click', generateAISummary);
 
     elements.employeeModal.addEventListener('click', (e) => {
         if (e.target === elements.employeeModal) closeModal();
@@ -82,6 +87,65 @@ function setupEventListeners() {
         input.addEventListener('input', () => clearError(input));
         input.addEventListener('blur', () => validateField(input));
     });
+}
+
+// Add the AI summary function
+async function generateAISummary() {
+    try {
+        // Show loading state
+        elements.aiSummaryContent.classList.add('hidden');
+        elements.aiLoading.classList.remove('hidden');
+        elements.generateSummaryBtn.disabled = true;
+        elements.generateSummaryBtn.innerHTML = `
+            <div class="loading-spinner small"></div>
+            Generating...
+        `;
+
+        const response = await fetch(`${API_BASE_URL}/ai-summary`);
+        const result = await response.json();
+
+        if (result.success) {
+            // Format the AI response with better styling
+            const formattedSummary = formatAISummary(result.summary);
+            elements.aiSummary.innerHTML = formattedSummary;
+            elements.aiSummaryContent.classList.remove('hidden');
+            
+            // Log this activity
+            logActivity('ai_analysis', 'AI Workforce Analysis', 'Summary generated');
+        } else {
+            showToast(result.error || 'Failed to generate AI summary', 'error');
+            elements.aiSummaryContent.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error generating AI summary:', error);
+        showToast('Failed to connect to AI service', 'error');
+        elements.aiSummaryContent.classList.remove('hidden');
+    } finally {
+        elements.aiLoading.classList.add('hidden');
+        elements.generateSummaryBtn.disabled = false;
+        elements.generateSummaryBtn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14,2 14,8 20,8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10,9 9,9 8,9"></polyline>
+            </svg>
+            Generate Insights
+        `;
+    }
+}
+function formatAISummary(summary) {
+    // Convert markdown-like formatting to HTML
+    let formatted = summary
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/(\d+\.)\s/g, '<br><strong>$1</strong> ')
+        .replace(/- /g, '<br>• ')
+        .replace(/\n/g, '<br>');
+    
+    // Add some basic structure
+    return `<div class="ai-insights">${formatted}</div>`;
 }
 
 async function loadEmployees() {
@@ -432,8 +496,8 @@ function logActivity(type, employeeName, position) {
         id: Date.now()
     };
     
-    activityLog.unshift(activity); // Add to beginning of array
-    activityLog = activityLog.slice(0, 10); // Keep only last 10 activities
+    activityLog.unshift(activity);
+    activityLog = activityLog.slice(0, 10);
     
     updateActivityLog();
     saveActivityLog();
@@ -461,13 +525,15 @@ function updateActivityLog() {
         const icons = {
             added: '<line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>',
             edited: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>',
-            deleted: '<polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>'
+            deleted: '<polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>',
+            ai_analysis: '<path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 5a10.94 10.94 0 0 1 5.17-2.39m2.83-.07a16 16 0 0 1 4.71 1.07M12 6.5v1.12M17.29 17.29a16 16 0 0 1-2.07 2.08M2 2l20 20M12 12v2.5"></path><circle cx="12" cy="12" r="3.5"></circle>'
         };
         
         const messages = {
             added: 'New employee added',
             edited: 'Employee updated',
-            deleted: 'Employee deleted'
+            deleted: 'Employee deleted',
+            ai_analysis: 'AI Analysis generated'
         };
         
         return `
@@ -486,7 +552,6 @@ function updateActivityLog() {
         `;
     }).join('');
 }
-
 function getTimeAgo(timestamp) {
     const now = new Date();
     const past = new Date(timestamp);
